@@ -14,16 +14,16 @@ from stable_baselines3 import PPO
 
 env_id = 'oscillator-v0'
 env = gym.make(env_id)
-time_steps = int(10e6)
-time_steps = int(200000)
+time_steps = int(1000*1000)
+#time_steps = int(200000)
 
 model = PPO("MlpPolicy", env, verbose=1)
 
 # model.learn(time_steps)
-# model.save('trained_models/trained_model_20ksteps.pkl')
+# model.save('trained_models/trained_model_1msteps.pkl')
 # quit()
 
-model = model.load('trained_models/trained_model_20ksteps.pkl')
+model = model.load('trained_models/trained_model_1msteps.pkl')
 
 env = gym.make(env_id)
 #Store rewards
