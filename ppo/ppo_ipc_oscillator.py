@@ -33,57 +33,57 @@ def multiprcess_predict(queue: mp.Queue, iters: int):
 		print("recv from training process!", current_iter, "iteration")
 		current_iter = current_iter + 1
 	else:
-	  #print("queue is empty!")
-	  pass
+		#print("queue is empty!")
+		pass
 
-	# #Store rewards
-	# rews_ = []
-	# #Store observations
-	# obs_ = []
-	# obs = env.reset()
-	# #Store actions
-	# acs_ = []
-	# #Store X,Y according to 
-	# states_x = []
-	# states_y = []
+	#Store rewards
+	rews_ = []
+	#Store observations
+	obs_ = []
+	obs = env.reset()
+	#Store actions
+	acs_ = []
+	#Store X,Y according to 
+	states_x = []
+	states_y = []
 
-	# #Initial, non-suppresssion 
-	# for i in range(25000):
-	#     obs, rewards, dones, info = env.step([0])
-	#     states_x.append(env.x_val)
-	#     states_y.append(env.y_val)
-	#     obs_.append(obs[0])
-	#     acs_.append(0)
-	#     rews_.append(rewards)
+	#Initial, non-suppresssion 
+	for i in range(25000):
+		obs, rewards, dones, info = env.step([0])
+		states_x.append(env.x_val)
+		states_y.append(env.y_val)
+		obs_.append(obs[0])
+		acs_.append(0)
+		rews_.append(rewards)
 
-	# #Suppression stage
-	# for i in range(25000):
-	#     action, _states = model.predict(obs)
-	  
-	#     obs, rewards, dones, info = env.step(action)
-	  
-	#     states_x.append(env.x_val)
-	#     states_y.append(env.y_val)
-	#     obs_.append(obs[0])
-	#     acs_.append(action)
-	#     rews_.append(rewards)
+	#Suppression stage
+	for i in range(25000):
+		action, _states = model.predict(obs)
+		
+		obs, rewards, dones, info = env.step(action)
+		
+		states_x.append(env.x_val)
+		states_y.append(env.y_val)
+		obs_.append(obs[0])
+		acs_.append(action)
+		rews_.append(rewards)
 
-	# #Final relaxation
-	# for i in range(5000):
-	#     obs, rewards, dones, info = env.step([0])
-	#     states_x.append(env.x_val)
-	#     states_y.append(env.y_val)
-	#     obs_.append(obs[0])
-	#     acs_.append(0)
-	#     rews_.append(rewards)
-	
-	# plt.figure(figsize=(25,5))
-	# plt.title('Suppression plot')
-	# plt.xlabel('TimeStep')
-	# plt.ylabel('Signal Value')
-	# plt.plot(states_x)
-	# plt.savefig("suppression.png", dpi=100)
-	# print("inference and plotting done at", current_iter, "iteration")
+	#Final relaxation
+	for i in range(5000):
+		obs, rewards, dones, info = env.step([0])
+		states_x.append(env.x_val)
+		states_y.append(env.y_val)
+		obs_.append(obs[0])
+		acs_.append(0)
+		rews_.append(rewards)
+
+	plt.figure(figsize=(25,5))
+	plt.title('Suppression plot')
+	plt.xlabel('TimeStep')
+	plt.ylabel('Signal Value')
+	plt.plot(states_x)
+	plt.savefig("suppression.png", dpi=100)
+	print("inference and plotting done at", current_iter, "iteration")
 	
 def main():
 	parser = argparse.ArgumentParser(description='sb3 PPO mp')
@@ -93,17 +93,6 @@ def main():
 
 	env = gym.make('oscillator-v0')
 	model = PPO("MlpPolicy", env, verbose=1)
-  # model.learn(total_timesteps=10)
-  # params_dicts = model.get_parameters()
-  # for k,v in params_dicts.items():
-  #   print(k)
-  #   print(type(v))
-  #   # for k1, v1 in v.items():
-  #   #   print(v1.size())
-
-  # del model
-  # model2 = PPO("MlpPolicy", env, verbose=1)
-  # model2.set_parameters(params_dicts)
 
 	#multi-processing
 	mp.set_start_method('spawn')
