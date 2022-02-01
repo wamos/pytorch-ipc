@@ -108,9 +108,9 @@ def main():
 			inf_process.start()
 			inf_started = True
 
-	params_dicts = model.get_parameters()    
-	ipc_queue.put(params_dicts)
-	sleep(0.5)
+			params_dicts = model.get_parameters()    
+			ipc_queue.put(params_dicts)
+			sleep(0.5)
 
 	env.close()
 	print("break from for loop")
