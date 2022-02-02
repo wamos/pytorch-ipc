@@ -13,7 +13,7 @@ server = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
 server.bind("/tmp/tensor_unix_sockets")
 max_iters=10
 current_iter=0
-expect_bytes = int(571) # 571 to be exact
+expect_bytes = int(110312) # 1131 to be exact
 print(type(expect_bytes))
 
 print("Listening...")
@@ -33,7 +33,6 @@ while current_iter < max_iters:
 	current_iter+=1
 
 print("-" * 20)
-print("total_len", total_len)
 print("Shutting down...")
 server.close()
 os.remove("/tmp/tensor_unix_sockets")

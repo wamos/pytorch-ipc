@@ -4,7 +4,17 @@
 ```bash
 pip install -r requirements.txt
 python ppo_ipc.py
+## increase socket buffer size for large dictionary of parameters
+sudo sysctl -w net.core.rmem_max=4136960 # was net.core.rmem_max = 212992
+sudo sysctl -w net.core.wmem_max=4136960 # was net.core.wmem_max = 212992
 ```
+
+## Known issue for using PyTorch 1.10
+pytorch 1.10.2+cu113 seems to be trigger a UserWarning when running with python multiple-processing package:
+`/usr/lib/python3.6/multiprocessing/semaphore_tracker.py:143: UserWarning: semaphore_tracker: There appear to be 1 leaked semaphores to clean up at shutdown`
+
+But it doesn't crash the code or impact the correctness. There are posts online suggest this is cause by Pytorch 1.9 or above and the workaround is to roll back to lower version of Pytorch   
+`pip install torch==1.8.1 torchvision==0.9.1`
 
 ## load and save using stable baseline 3's interface
 

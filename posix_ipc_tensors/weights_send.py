@@ -15,7 +15,7 @@ if os.path.exists("/tmp/tensor_unix_sockets"):
 
 	while current_iter < max_iters:
 		print("current-iter:", current_iter)
-		dummy_input = torch.randn(5, 10, device="cpu")
+		dummy_input = torch.randn(100, 100, device="cpu")
 		print(dummy_input)
 		numlist = dummy_input.tolist()
 		lv = ListValue()
@@ -28,24 +28,24 @@ if os.path.exists("/tmp/tensor_unix_sockets"):
 		tensor1.rows.extend(lv)
 
 		assert tensor1.name == 'b-bias'
-		assert len(tensor1.rows)==5
+		assert len(tensor1.rows)==100
 		s = tensor_map.SerializeToString()
-		# print(len(s))
+		print(len(s))
 		vs = memoryview(s)
 
 		# print("sending", len(s))
 		total_bytes = 0
 		sent_iter = 0
+		packet_size = 8192
 		while total_bytes < len(s):
-			start_index = 0 + 100*sent_iter
-			end_index = 100*(sent_iter+1) if 100*(sent_iter+1) < len(s) else len(s)
+			start_index = 0 + packet_size*sent_iter
+			end_index = packet_size*(sent_iter+1) if packet_size*(sent_iter+1) < len(s) else len(s)
 			print("start", start_index, "end", end_index)
 			sent_bytes = client.send(vs[start_index:end_index])
 			total_bytes += sent_bytes
 			print("sent", sent_bytes, "on sent_iter", sent_iter, "total bytes", total_bytes)
 			sent_iter += 1
-			
-			
+						
 		# start_index = 0 + 100*sent_iter
 		# sent_bytes = client.send(vs[start_index:])
 		# total_bytes += sent_bytes

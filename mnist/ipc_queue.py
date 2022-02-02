@@ -170,7 +170,7 @@ def main():
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
 
     # set up the mp.Queue and child process for inference, i.e. test
-    mp.set_start_method('spawn')
+    mp.set_start_method('spawn', force=True)
     ipc_queue = mp.Queue()    
     inf_device = torch.device("cpu")
     copy_model = Net()
